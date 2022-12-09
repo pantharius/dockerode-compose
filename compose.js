@@ -28,7 +28,7 @@ class Compose {
   }
 
   async down(options) {
-    var output = {};
+    let output = {};
     try { 
       output.file = this.file;
       output.services = await services.down(this.docker, this.projectName, this.recipe, output, options);
@@ -45,7 +45,7 @@ class Compose {
   }
 
   async up(options) {
-    var output = {};
+    let output = {};
     try {
       output.file = this.file;
       output.secrets = await secrets(this.docker, this.projectName, this.recipe, output);
@@ -61,12 +61,12 @@ class Compose {
 
   async pull(serviceN, options) {
     options = options || {};
-    var streams = [];
-    var serviceNames = (serviceN === undefined || serviceN === null) ? tools.sortServices(this.recipe) : [serviceN];
-    for (var serviceName of serviceNames) {
-      var service = this.recipe.services[serviceName];
+    let streams = [];
+    let serviceNames = (serviceN === undefined || serviceN === null) ? tools.sortServices(this.recipe) : [serviceN];
+    for (let serviceName of serviceNames) {
+      let service = this.recipe.services[serviceName];
       try {
-        var streami = await this.docker.pull(service.image);
+        let streami = await this.docker.pull(service.image, options);
         streams.push(streami);
 
         if (options.verbose === true) {
