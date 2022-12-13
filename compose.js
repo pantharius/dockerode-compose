@@ -44,15 +44,16 @@ class Compose {
     }
   }
 
-  async up(options) {
+  async up(options, upParams) {
     let output = {};
     try {
       output.file = this.file;
-      output.secrets = await secrets(this.docker, this.projectName, this.recipe, output);
-      output.volumes = await volumes.up(this.docker, this.projectName, this.recipe, output);
-      output.configs = await configs(this.docker, this.projectName, this.recipe, output);
-      output.networks = await networks.up(this.docker, this.projectName, this.recipe, output);
-      output.services = await services.up(this.docker, this.projectName, this.recipe, output, options);
+      let instanceIdString = options.instanceId!==undefined?'-'+options.instanceId:'';
+      output.secrets = await secrets(this.docker, this.projectName+instanceIdString, this.recipe, output);
+      output.volumes = await volumes.up(this.docker, this.projectName+instanceIdString, this.recipe, output);
+      output.configs = await configs(this.docker, this.projectName+instanceIdString, this.recipe, output);
+      output.networks = await networks.up(this.docker, this.projectName+instanceIdString, this.recipe, output);
+      output.services = await services.up(this.docker, this.projectName+instanceIdString, this.recipe, output, options, upParams);
       return output;
     } catch (e) {
       throw e;
